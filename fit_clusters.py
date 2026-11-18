@@ -3,6 +3,8 @@ from pathlib import Path
 import pandas as pd
 from sklearn.cluster import KMeans
 
+from cluster_model import predict_cluster
+
 ROOT = Path(__file__).resolve().parent
 
 SKILLS = [
@@ -28,3 +30,6 @@ for i, centroid in enumerate(model.cluster_centers_):
     print(f"cluster {i}: n={n} centroid=[{vals}]")
 
 print(df[["netid", "cluster"]].to_string(index=False))
+
+matched = sum(predict_cluster(row) == label for row, label in zip(X.to_numpy(), labels))
+print(f"match={matched}/{len(labels)}")
